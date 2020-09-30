@@ -21,11 +21,36 @@
         <mockito.junit.jupiter.version>2.23.0</mockito.junit.jupiter.version>
         <assertj.core.version>3.4.1</assertj.core.version>
         <log4j.version>1.2.17</log4j.version>
+        <ibatis.core.version>3.0</ibatis.core.version>
+        <hikaricp.version>3.4.5</hikaricp.version>
+        <slf4j.simple.version>1.7.30</slf4j.simple.version>
         <mainClass>ru.karachev.formulaone.FormulaOneApplication</mainClass>
         <main.class.for.manifest>ru.karachev.formulaone.FormulaOneApplication</main.class.for.manifest>
+
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${hikaricp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.simple.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-core</artifactId>
+            <version>${ibatis.core.version}</version>
+        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -42,14 +67,12 @@
             <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>

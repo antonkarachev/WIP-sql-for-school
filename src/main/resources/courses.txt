@@ -1,0 +1,10 @@
+Biology_science about life and living organisms
+Chemistry_chemical elements and their compounds, as well as the laws governing various chemical reactions
+Mathematics_science about all
+Sports_runs,jump and play
+English_learn foreign language
+Literature_learn to think and fell world
+History_science about past and future
+DataScience_science about a branch of informatics that studies the problems of analysis, processing and presentation of data in digital form
+Modeling_learn of model everything you want
+Arts_learn to draw and make what you want
