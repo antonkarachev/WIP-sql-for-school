@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS students_to_courses CASCADE;
 
 CREATE TABLE groups
 (
-    group_id   INT UNIQUE NOT NULL,
+    group_id   INT UNIQUE NOT NULL ,
     group_name VARCHAR    NOT NULL,
     PRIMARY KEY (group_id)
 );
@@ -13,11 +13,11 @@ CREATE TABLE groups
 CREATE TABLE students
 (
     student_id        INT UNIQUE NOT NULL,
-    group_id          INT        NOT NULL,
+    group_id          INT,
     student_name      VARCHAR    NOT NULL,
     student_last_name VARCHAR    NOT NULL,
     PRIMARY KEY (student_id),
-    FOREIGN KEY (group_id) REFERENCES groups
+    FOREIGN KEY (group_id) REFERENCES groups ON DELETE SET NULL
 );
 
 CREATE TABLE courses

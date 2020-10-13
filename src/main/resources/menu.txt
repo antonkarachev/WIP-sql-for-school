@@ -1,0 +1,12 @@
+Hello, this is database console application for school.
+You have three tables: students, groups and courses.
+You can make some query for it, here are commands to do it:
+
+1 - to find all groups with less or equals student count.
+2 - to find all students related to course with given name.
+3 - to add new student.
+4 - to delete student by ID.
+5 - to add student to the specified course by his ID.
+6 - to remove student from one of his course by student ID.
+e - to close application.
+

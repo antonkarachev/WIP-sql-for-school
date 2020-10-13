@@ -10,19 +10,18 @@ public class CourseCreator {
 
     private static final Logger LOGGER = Logger.getLogger(CourseCreator.class);
 
-    private static final int MAX_GROUPS = 10;
     private static final int PLACE_OF_NAME = 0;
     private static final int PLACE_OF_DESCRIPTION = 1;
     private static final String SPLITERATOR = "_";
 
-    public List<Course> createCourses(List<String> courseNamesAndDescription) {
+    public List<Course> createCourses(int maxCourses, List<String> courseNamesAndDescription) {
         List<Course> courses = new ArrayList<>();
-        for (int i = 0; i < MAX_GROUPS; i++) {
+        for (int i = 0; i < maxCourses; i++) {
             String line = courseNamesAndDescription.get(i);
             courses.add(Course.builder()
                     .withCourseId(i + 1)
-                    .withDescription(getFromLine(PLACE_OF_DESCRIPTION, line))
                     .withCourseName(getFromLine(PLACE_OF_NAME, line))
+                    .withDescription(getFromLine(PLACE_OF_DESCRIPTION, line))
                     .build());
         }
 

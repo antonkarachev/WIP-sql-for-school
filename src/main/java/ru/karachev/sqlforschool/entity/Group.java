@@ -16,11 +16,11 @@ public class Group {
         return new Builder();
     }
 
-    public Integer getGroupId() {
+    public Integer getId() {
         return groupId;
     }
 
-    public String getGroupName() {
+    public String getName() {
         return groupName;
     }
 

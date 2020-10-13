@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -42,15 +43,17 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
     private final String saveQuery;
     private final String findByIdQuery;
     private final String findAllQuery;
+    private final String findAllPaginationQuery;
     private final String updateQuery;
     private final String deleteByIdQuery;
 
     public AbstractCrudDaoImpl(DBConnector connector, String saveQuery, String findByIdQuery,
-                               String findAllQuery, String updateQuery, String deleteByIdQuery) {
+                               String findAllQuery, String findAllPaginationQuery, String updateQuery, String deleteByIdQuery) {
         this.connector = connector;
         this.saveQuery = saveQuery;
         this.findByIdQuery = findByIdQuery;
         this.findAllQuery = findAllQuery;
+        this.findAllPaginationQuery = findAllPaginationQuery;
         this.updateQuery = updateQuery;
         this.deleteByIdQuery = deleteByIdQuery;
     }
@@ -59,7 +62,7 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
     public void save(E entity) {
         try (Connection connection = connector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
-            insertForSave(preparedStatement, entity);
+            insert(preparedStatement, entity);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Save failed", e);
@@ -68,16 +71,58 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
     }
 
     @Override
-    public Optional<E> findById(Integer id) {
-        return findByIntegerParam(id, findByIdQuery);
+    public void saveAll(List<E> entities) {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
+            for (E entity : entities) {
+                insert(preparedStatement, entity);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+            LOGGER.info("Saving from list complete ");
+        } catch (SQLException e) {
+            LOGGER.error("Saving from list failed", e);
+            throw new DataBaseException("Saving from list failed", e);
+        }
     }
 
     @Override
-    public List<E> findAll(Integer startId, Integer countOfIds) {
+    public Optional<E> findById(Integer id) {
         try (Connection connection = connector.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(findAllQuery)) {
-            preparedStatement.setInt(1, countOfIds);
-            preparedStatement.setInt(2, startId - 1);
+             PreparedStatement preparedStatement = connection.prepareStatement(findByIdQuery)) {
+            INTEGER_CONSUMER.accept(preparedStatement, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Find by id failed", e);
+            throw new DataBaseException("Find by id failed", e);
+        }
+    }
+
+    @Override
+    public List<E> findAll() {
+        try (Connection connection = connector.getConnection();
+             Statement statement = connection.createStatement()) {
+            List<E> entities = new ArrayList<>();
+            try (ResultSet resultSet = statement.executeQuery(findAllQuery)) {
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+                return entities;
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Find all failed", e);
+            throw new DataBaseException("Find all failed", e);
+        }
+    }
+
+    @Override
+    public List<E> findAll(int page, int itemPerPage) {
+        try (Connection connection = connector.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(findAllPaginationQuery)) {
+            preparedStatement.setInt(1, itemPerPage);
+            preparedStatement.setInt(2, ((itemPerPage * page) - itemPerPage));
             List<E> entities = new ArrayList<>();
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
@@ -115,30 +160,35 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
         }
     }
 
-    protected Optional<E> findByIntegerParam(Integer id, String query) {
-        return findByParam(id, query, INTEGER_CONSUMER);
+    protected List<E> findAllByIntParameter(Integer parameter, String query) {
+        return findAllByParameter(parameter, query, INTEGER_CONSUMER);
     }
 
-    protected Optional<E> findByStringParam(Integer name, String query) {
-        return findByParam(name, query, INTEGER_CONSUMER);
+    protected List<E> findAllByStringParam(String parameter, String query) {
+        return findAllByParameter(parameter, query, STRING_CONSUMER);
     }
 
-    private <P> Optional<E> findByParam(P parameter, String query, BiConsumer<PreparedStatement, P> consumer) {
+    protected <P> List<E> findAllByParameter(P parameter, String query,
+                                             BiConsumer<PreparedStatement, P> consumer) {
+        List<E> entities = new ArrayList<>();
         try (Connection connection = connector.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             consumer.accept(preparedStatement, parameter);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
+                while (resultSet.next()) {
+                    entities.add(mapResultSetToEntity(resultSet));
+                }
+                return entities;
             }
         } catch (SQLException e) {
-            LOGGER.error("Find by parameter failed", e);
-            throw new DataBaseException("Find by parameter failed", e);
+            LOGGER.error("Find all by parameter failed", e);
+            throw new DataBaseException("Find all by parameter failed", e);
         }
     }
 
     protected abstract E mapResultSetToEntity(ResultSet resultSet) throws SQLException;
 
-    protected abstract void insertForSave(PreparedStatement preparedStatement, E entity) throws SQLException;
+    protected abstract void insert(PreparedStatement preparedStatement, E entity) throws SQLException;
 
     protected abstract void updateValues(PreparedStatement preparedStatement, E entity) throws SQLException;
 

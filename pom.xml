@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,8 +24,10 @@
         <ibatis.core.version>3.0</ibatis.core.version>
         <hikaricp.version>3.4.5</hikaricp.version>
         <slf4j.simple.version>1.7.30</slf4j.simple.version>
-        <mainClass>ru.karachev.formulaone.FormulaOneApplication</mainClass>
-        <main.class.for.manifest>ru.karachev.formulaone.FormulaOneApplication</main.class.for.manifest>
+        <com.h2database.version>1.4.200</com.h2database.version>
+        <system.lambda.version>1.0.0</system.lambda.version>
+        <mainClass>ru.karachev.sqlforschool.ApplicationRunner</mainClass>
+        <main.class.for.manifest>ru.karachev.sqlforschool.ApplicationRunner</main.class.for.manifest>
 
     </properties>
 
@@ -33,7 +35,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.200</version>
+            <version>${com.h2database.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -85,6 +87,12 @@
             <version>1.5.2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-lambda</artifactId>
+            <version>${system.lambda.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,7 +103,11 @@
                 <version>${jacoco.maven.plugin.version}</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/*FormulaOneApplication.class</exclude>
+                        <exclude>**/*ApplicationRunner.class</exclude>
+                        <exclude>**/*exception/*</exclude>
+                        <exclude>**/*entity/*</exclude>
+                        <exclude>**/*context/*</exclude>
+                        <exclude>**/*datasource/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

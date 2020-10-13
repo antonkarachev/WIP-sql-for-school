@@ -4,16 +4,10 @@ import ru.karachev.sqlforschool.entity.Student;
 
 import java.util.List;
 
-public interface StudentDao extends CrudDao <Student, Integer>{
+public interface StudentDao extends CrudDao<Student, Integer> {
 
-    void saveFromList(List<Student> students);
+    List<Student> findAllByCourseName(String courseName);
 
-    void assignStudentToCourses(Student student);
-
-    void assignStudentsFromListToCourses(List<Student> students);
-
-    void addStudentToSpecifiedCourse(Integer studentId, Integer courseId);
-
-    List<Student> findAllStudentsRelatedToCourseByName(String courseName);
+    void assignToCourse(Integer studentId, Integer courseId);
 
 }

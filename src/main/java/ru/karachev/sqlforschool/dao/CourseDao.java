@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CourseDao extends CrudDao<Course, Integer> {
 
-    List<String> findAllCourseNames();
+    List<Course> findAllByStudentId(int studentId);
 
-    void deleteStudentFromOneCourse(Integer studentId, Integer courseId);
+    void removeStudentFromCourse(Integer studentId, Integer courseId);
 }

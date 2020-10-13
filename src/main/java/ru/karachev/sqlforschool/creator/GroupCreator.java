@@ -10,23 +10,23 @@ import java.util.Random;
 public class GroupCreator {
 
     private static final Logger LOGGER = Logger.getLogger(GroupCreator.class);
-    private static final int MAX_GROUPS = 10;
+
     private static final int PREFIX_LENGTH = 2;
-    private static final int MAX_ID = 99;
     private static final String DASH = "-";
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
 
-    public static int getMaxGroups() {
-        return MAX_GROUPS;
+    private final Random random;
+
+    public GroupCreator(Random random) {
+        this.random = random;
     }
 
-    public List<Group> createGroups(Random random) {
+    public List<Group> createGroups(int maxId, int maxGroups) {
         List<Group> groups = new ArrayList<>();
-
-        for (int i = 0; i < MAX_GROUPS; i++) {
+        for (int i = 0; i < maxGroups; i++) {
             groups.add(Group.builder()
                     .withGroupId(i + 1)
-                    .withGroupName(createName(random))
+                    .withGroupName(createName(maxId))
                     .build());
         }
 
@@ -34,7 +34,7 @@ public class GroupCreator {
         return groups;
     }
 
-    private String createName(Random random) {
+    private String createName(int maxId) {
         StringBuilder name = new StringBuilder();
 
         for (int i = 0; i < PREFIX_LENGTH; i++) {
@@ -42,7 +42,7 @@ public class GroupCreator {
         }
 
         return name.append(DASH)
-                .append(random.nextInt(MAX_ID)).toString().toUpperCase();
+                .append(random.nextInt(maxId)).toString().toUpperCase();
     }
 
 }

@@ -17,11 +17,11 @@ public class Course {
         return new Builder();
     }
 
-    public Integer getCourseId() {
+    public Integer getId() {
         return courseId;
     }
 
-    public String getCourseName() {
+    public String getName() {
         return courseName;
     }
 

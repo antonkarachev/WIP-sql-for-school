@@ -3,16 +3,20 @@ package ru.karachev.sqlforschool.dao;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudDao <E, ID>{
+public interface CrudDao<E, ID> {
 
-    void save (E entity);
+    void save(E entity);
 
-    Optional<E> findById (ID ID);
+    void saveAll(List<E> entities);
 
-    void update (E entity);
+    Optional<E> findById(ID id);
 
-    List<E> findAll(ID page, ID itemPerPage);
+    void update(E entity);
 
-    void deleteById (ID ID);
+    List<E> findAll(int page, int itemPerPage);
+
+    List<E> findAll();
+
+    void deleteById(ID id);
 
 }

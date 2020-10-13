@@ -13,11 +13,11 @@ CREATE TABLE groups
 CREATE TABLE students
 (
     student_id        INT UNIQUE NOT NULL,
-    group_id          INT        NOT NULL,
+    group_id          INT,
     student_name      VARCHAR    NOT NULL,
     student_last_name VARCHAR    NOT NULL,
     PRIMARY KEY (student_id),
-    FOREIGN KEY (group_id) REFERENCES groups
+    FOREIGN KEY (group_id) REFERENCES groups ON DELETE SET NULL
 );
 
 CREATE TABLE courses
@@ -44,9 +44,9 @@ INSERT INTO groups VALUES (1,'first group');
 INSERT INTO groups VALUES (2,'second group');
 
 INSERT INTO students VALUES (1, 2,'Anton','Karachev' );
-INSERT INTO students VALUES (2,2,'Yuliya','Krasava' );
-INSERT INTO students VALUES (3,1,'Alexander','Bublikov');
-INSERT INTO students VALUES (4,1,'Sofia','Morkovkina');
+INSERT INTO students VALUES (2, 2,'Yuliya','Krasava' );
+INSERT INTO students VALUES (3, 2,'Alexander','Bublikov');
+INSERT INTO students VALUES (4, 1,'Sofia','Morkovkina');
 
 INSERT INTO students_to_courses VALUES (1,1);
 INSERT INTO students_to_courses VALUES (1,2);
@@ -55,6 +55,6 @@ INSERT INTO students_to_courses VALUES (2,3);
 INSERT INTO students_to_courses VALUES (3,1);
 INSERT INTO students_to_courses VALUES (3,2);
 INSERT INTO students_to_courses VALUES (3,3);
-INSERT INTO students_to_courses VALUES (1,1);
-INSERT INTO students_to_courses VALUES (1,2);
-INSERT INTO students_to_courses VALUES (1,3);
+INSERT INTO students_to_courses VALUES (4,1);
+INSERT INTO students_to_courses VALUES (4,2);
+INSERT INTO students_to_courses VALUES (4,3);

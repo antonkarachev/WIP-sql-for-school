@@ -16,9 +16,9 @@ public class FileReader {
 
     public List<String> readFile(String filePath) {
 
-        try (Stream<String> data = Files.lines(Paths.get(filePath))) {
+        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
             LOGGER.info("Reading " + filePath + " complete");
-            return data.collect(Collectors.toList());
+            return stream.collect(Collectors.toList());
         } catch (IOException e) {
             LOGGER.error("Reading " + filePath + " failed", e);
             throw new FileReaderException("Reading " + filePath + " failed", e);

@@ -1,7 +1,6 @@
 package ru.karachev.sqlforschool.entity;
 
 import java.util.Objects;
-import java.util.Set;
 
 public class Student {
 
@@ -9,21 +8,19 @@ public class Student {
     private final Integer groupId;
     private final String name;
     private final String lastName;
-    private final Set<Integer> courseIds;
 
     private Student(Builder builder) {
         this.studentId = builder.studentId;
         this.groupId = builder.groupId;
         this.name = builder.name;
         this.lastName = builder.lastName;
-        this.courseIds = builder.courseIds;
     }
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public Integer getStudentId() {
+    public Integer getId() {
         return studentId;
     }
 
@@ -39,10 +36,6 @@ public class Student {
         return groupId;
     }
 
-    public Set<Integer> getCourseIds() {
-        return courseIds;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,13 +48,12 @@ public class Student {
         return Objects.equals(studentId, student.studentId) &&
                 Objects.equals(groupId, student.groupId) &&
                 Objects.equals(name, student.name) &&
-                Objects.equals(lastName, student.lastName) &&
-                Objects.equals(courseIds, student.courseIds);
+                Objects.equals(lastName, student.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, groupId, name, lastName, courseIds);
+        return Objects.hash(studentId, groupId, name, lastName);
     }
 
     @Override
@@ -70,7 +62,8 @@ public class Student {
                 "studentId=" + studentId +
                 ", groupId=" + groupId +
                 ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'';
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 
     public static class Builder {
@@ -78,8 +71,6 @@ public class Student {
         private Integer groupId;
         private String name;
         private String lastName;
-        private Set<Integer> courseIds;
-
 
         public Builder withStudentId(Integer studentId) {
             this.studentId = studentId;
@@ -98,11 +89,6 @@ public class Student {
 
         public Builder withLastName(String lastName) {
             this.lastName = lastName;
-            return this;
-        }
-
-        public Builder withCourseIds(Set<Integer> courseIds) {
-            this.courseIds = courseIds;
             return this;
         }
 
