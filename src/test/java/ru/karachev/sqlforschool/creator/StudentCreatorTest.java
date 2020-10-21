@@ -1,11 +1,10 @@
-package ru.karachev.sqlforschool.datasource;
+package ru.karachev.sqlforschool.creator;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.karachev.sqlforschool.creator.StudentCreator;
 import ru.karachev.sqlforschool.entity.Student;
 
 import java.util.ArrayList;
@@ -20,10 +19,10 @@ import static org.mockito.Mockito.when;
 class StudentCreatorTest {
 
     @InjectMocks
-    StudentCreator studentCreator;
+    private StudentCreator studentCreator;
 
     @Mock
-    Random mockedRandom;
+    private Random mockedRandom;
 
     @Test
     void createStudentsShouldReturnListOfStudentsWhenGettingData() {

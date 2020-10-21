@@ -17,10 +17,10 @@ import static org.mockito.Mockito.when;
 class ViewProviderImplTest {
 
     @InjectMocks
-    ViewProvider viewProvider;
+    private ViewProvider viewProvider;
 
     @Mock
-    Scanner scanner;
+    private Scanner scanner;
 
     @Test
     void readStringShouldReturnStringWhichIsInputFromConsole() {
@@ -46,5 +46,15 @@ class ViewProviderImplTest {
         });
 
         assertThat(input).isEqualTo(output.trim());
+    }
+    
+    @Test
+    void printErrorShouldPrintErrorMessage() throws Exception {
+        String errorMessage = "No such command, please repeat";
+        String output = tapSystemOut(()->{
+            viewProvider.printError();
+        });
+        
+        assertThat(errorMessage).isEqualTo(output.trim());
     }
 }

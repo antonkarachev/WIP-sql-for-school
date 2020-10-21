@@ -19,7 +19,8 @@ public class StudentDaoImpl extends AbstractCrudDaoImpl<Student> implements Stud
     private static final String SAVE_QUERY = "INSERT INTO students VALUES (?, ?, ?, ?)";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM students WHERE student_id=?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM students ORDER BY student_id";
-    private static final String FIND_ALL_PAGINATION_QUERY = "SELECT * FROM students ORDER BY student_id LIMIT ? OFFSET ?";
+    private static final String FIND_ALL_PAGINATION_QUERY =
+            "SELECT * FROM students ORDER BY student_id LIMIT ? OFFSET ?";
     private static final String UPDATE_QUERY = "UPDATE students SET group_id = ?, student_name=?, " +
             "student_last_name=? WHERE student_id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM students WHERE student_id=?";
@@ -30,6 +31,10 @@ public class StudentDaoImpl extends AbstractCrudDaoImpl<Student> implements Stud
                     "(SELECT course_id FROM courses WHERE course_name = ?)) " +
                     "ORDER BY student_id";
     private static final String ASSIGN_STUDENT_TO_COURSE_QUERY = "INSERT into students_to_courses VALUES (?,?)";
+    
+    private static final String COMPLETE = "complete";
+    private static final String FAILED = "failed";
+    private static final String ASSIGNING_MESSAGE = "Assign student to course ";
 
     public StudentDaoImpl(DBConnector connector) {
         super(connector, SAVE_QUERY, FIND_BY_ID_QUERY, FIND_ALL_QUERY, FIND_ALL_PAGINATION_QUERY,
@@ -48,10 +53,10 @@ public class StudentDaoImpl extends AbstractCrudDaoImpl<Student> implements Stud
             preparedStatement.setInt(1, studentId);
             preparedStatement.setInt(2, courseId);
             preparedStatement.executeUpdate();
-            LOGGER.info("Assigning student" + studentId + " to course " + courseId + " complete");
+            LOGGER.info(ASSIGNING_MESSAGE + COMPLETE);
         } catch (SQLException e) {
-            LOGGER.error("Assigning student" + studentId + " to course " + courseId + " failed", e);
-            throw new DataBaseException("Assigning student" + studentId + " to course " + courseId + " failed", e);
+            LOGGER.error(ASSIGNING_MESSAGE + FAILED, e);
+            throw new DataBaseException(ASSIGNING_MESSAGE + FAILED, e);
         }
     }
 

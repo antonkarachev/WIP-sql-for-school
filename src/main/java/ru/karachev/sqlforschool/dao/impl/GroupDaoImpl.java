@@ -1,6 +1,5 @@
 package ru.karachev.sqlforschool.dao.impl;
 
-import org.apache.log4j.Logger;
 import ru.karachev.sqlforschool.dao.GroupDao;
 import ru.karachev.sqlforschool.entity.Group;
 import ru.karachev.sqlforschool.service.DBConnector;
@@ -12,12 +11,11 @@ import java.util.List;
 
 public class GroupDaoImpl extends AbstractCrudDaoImpl<Group> implements GroupDao {
 
-    private static final Logger LOGGER = Logger.getLogger(GroupDaoImpl.class);
-
     private static final String SAVE_QUERY = "INSERT INTO groups(group_id, group_name) VALUES (?, ?)";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM groups WHERE group_id = ?";
     private static final String FIND_ALL_QUERY = "SELECT * FROM groups ORDER BY group_id";
-    private static final String FIND_ALL_PAGINATION_QUERY = "SELECT * FROM groups ORDER BY group_id LIMIT ? OFFSET ?";
+    private static final String FIND_ALL_PAGINATION_QUERY =
+            "SELECT * FROM groups ORDER BY group_id LIMIT ? OFFSET ?";
     private static final String UPDATE_QUERY = "UPDATE groups SET group_name = ? WHERE group_id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM groups WHERE group_id=?";
 

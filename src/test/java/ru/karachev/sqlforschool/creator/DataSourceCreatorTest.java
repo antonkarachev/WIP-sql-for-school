@@ -1,14 +1,11 @@
-package ru.karachev.sqlforschool.datasource;
+package ru.karachev.sqlforschool.creator;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.karachev.sqlforschool.creator.CourseCreator;
-import ru.karachev.sqlforschool.creator.DataSourceCreator;
-import ru.karachev.sqlforschool.creator.GroupCreator;
-import ru.karachev.sqlforschool.creator.StudentCreator;
+import ru.karachev.sqlforschool.datasource.DataSource;
 import ru.karachev.sqlforschool.entity.Course;
 import ru.karachev.sqlforschool.entity.Group;
 import ru.karachev.sqlforschool.entity.Student;

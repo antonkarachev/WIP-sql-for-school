@@ -1,7 +1,6 @@
-package ru.karachev.sqlforschool.datasource;
+package ru.karachev.sqlforschool.creator;
 
 import org.junit.jupiter.api.Test;
-import ru.karachev.sqlforschool.creator.CourseCreator;
 import ru.karachev.sqlforschool.entity.Course;
 
 import java.util.ArrayList;

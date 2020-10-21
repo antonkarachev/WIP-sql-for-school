@@ -2,16 +2,13 @@ package ru.karachev.sqlforschool.dao.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.karachev.sqlforschool.service.DataBaseGenerator;
 import ru.karachev.sqlforschool.dao.CourseDao;
+import ru.karachev.sqlforschool.dao.StudentDao;
 import ru.karachev.sqlforschool.entity.Course;
-import ru.karachev.sqlforschool.exception.DataBaseException;
+import ru.karachev.sqlforschool.entity.Student;
 import ru.karachev.sqlforschool.service.DBConnector;
+import ru.karachev.sqlforschool.service.DataBaseGenerator;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +19,7 @@ class CourseDaoImplTest {
     private final DBConnector connector = new DBConnector("src/test/resources/database.properties");
     private final DataBaseGenerator dataBaseGenerator = new DataBaseGenerator(connector);
     private final CourseDao courseDao = new CourseDaoImpl(connector);
+    private final StudentDao studentDao = new StudentDaoImpl(connector);
 
     @BeforeEach
     void createDataBase() {
@@ -132,18 +130,15 @@ class CourseDaoImplTest {
 
     @Test
     void deleteStudentFromOneCourseShouldDeleteStudentFromTableStudentToCourses() {
+        Student student = Student.builder()
+                .withStudentId(1)
+                .withGroupId(2)
+                .withName("Anton")
+                .withLastName("Karachev")
+                .build();
         courseDao.removeStudentFromCourse(1, 2);
-        String query = "SELECT FROM students_to_courses WHERE student_id = 1 AND course_id = 2";
-        boolean isExist;
-        try (Connection connection = connector.getConnection();
-             Statement statement = connection.createStatement()) {
-            try (ResultSet resultSet = statement.executeQuery(query)) {
-                isExist = resultSet.next();
-            }
-        } catch (SQLException e) {
-            throw new DataBaseException("Deleting student from course failed", e);
-        }
-        assertThat(isExist).isFalse();
+        assertThat(studentDao.findAllByCourseName("history")).isNotEmpty();
+        assertThat(studentDao.findAllByCourseName("history")).doesNotContain(student);
     }
 
 }

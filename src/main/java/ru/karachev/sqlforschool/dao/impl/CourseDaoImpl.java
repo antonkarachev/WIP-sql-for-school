@@ -49,7 +49,6 @@ public class CourseDaoImpl extends AbstractCrudDaoImpl<Course> implements Course
             statement.setInt(2, courseId);
             statement.executeUpdate();
             LOGGER.info("Student with id: " + studentId + "removed from course with id:" + courseId);
-
         } catch (SQLException e) {
             LOGGER.error("Can`t remove student with id: " + studentId +
                     " from course with id:" + courseId, e);

@@ -12,7 +12,7 @@ CREATE TABLE groups
 
 CREATE TABLE students
 (
-    student_id        INT UNIQUE NOT NULL,
+    student_id        BIGINT UNIQUE NOT NULL,
     group_id          INT,
     student_name      VARCHAR    NOT NULL,
     student_last_name VARCHAR    NOT NULL,
@@ -30,8 +30,8 @@ CREATE TABLE courses
 
 CREATE TABLE students_to_courses
 (
-    student_id INT,
-    course_id  INT,
+    student_id BIGINT,
+    course_id  BIGINT,
     FOREIGN KEY (student_id) REFERENCES students ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses ON DELETE CASCADE
 );

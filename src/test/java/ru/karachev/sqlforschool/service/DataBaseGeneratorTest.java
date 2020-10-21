@@ -1,14 +1,18 @@
 package ru.karachev.sqlforschool.service;
 
 import org.junit.jupiter.api.Test;
-import ru.karachev.sqlforschool.context.ContextInjector;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DataBaseGeneratorTest {
 
-    ContextInjector contextInjector = new ContextInjector();
-    private DataBaseGenerator dataBaseGenerator = new DataBaseGenerator(contextInjector.getConnector());
+    @InjectMocks
+    private DataBaseGenerator dataBaseGenerator;
+    
+    @Mock
+    private DBConnector connector;
 
     @Test
     void generateDataBaseShouldThrowExceptionWhenGettingWrongFilePathToScript() {
