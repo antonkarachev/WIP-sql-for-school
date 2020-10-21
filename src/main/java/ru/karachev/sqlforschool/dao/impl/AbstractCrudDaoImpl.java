@@ -19,19 +19,23 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
     
     private static final Logger LOGGER = Logger.getLogger(AbstractCrudDaoImpl.class);
     
-    private static final String SAVING_FROM_LIST_MESSAGE= "Saving from list";
-    private static final String SAVE_MESSAGE= "Saving";
+    private static final String MESSAGE_FORMAT = "%s%s";
+    private static final String SAVING_FROM_LIST_MESSAGE = "Saving from list";
+    private static final String SAVE_MESSAGE = "Saving";
     private static final String FIND_ALL_MESSAGE = "Find all";
-    private static final String FAILED_MESSAGE = " failed";
-    private static final String COMPLETE_MESSAGE = " complete";
+    private static final String FIND_BY_ID_MESSAGE = "Find by id";
+    private static final String DELETE_MESSAGE = "Deleting by id";
+    private static final String UPDATE_MESSAGE = "Updating";
+    private static final String FAILED_MESSAGE = "failed";
+    private static final String COMPLETE_MESSAGE = "complete";
     
     private static final BiConsumer<PreparedStatement, Integer> INTEGER_CONSUMER
             = (PreparedStatement preparedStatement, Integer parameter) -> {
         try {
             preparedStatement.setInt(1, parameter);
         } catch (SQLException e) {
-            LOGGER.error("Integer consumer" + FAILED_MESSAGE, e);
-            throw new DataBaseException("Integer consumer" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, "Integer consumer", FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, "Integer consumer", FAILED_MESSAGE), e);
         }
     };
     
@@ -40,8 +44,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
         try {
             preparedStatement.setString(1, parameter);
         } catch (SQLException e) {
-            LOGGER.error("String consumer" + FAILED_MESSAGE, e);
-            throw new DataBaseException("String consumer" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, "String consumer", FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, "String consumer", FAILED_MESSAGE), e);
         }
     };
     
@@ -71,10 +75,10 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
              PreparedStatement preparedStatement = connection.prepareStatement(saveQuery)) {
             insert(preparedStatement, entity);
             preparedStatement.executeUpdate();
-            LOGGER.info(SAVE_MESSAGE + COMPLETE_MESSAGE);
+            LOGGER.info(String.format(MESSAGE_FORMAT, SAVE_MESSAGE, COMPLETE_MESSAGE));
         } catch (SQLException e) {
-            LOGGER.error(SAVE_MESSAGE + FAILED_MESSAGE, e);
-            throw new DataBaseException(SAVE_MESSAGE + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, SAVE_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, SAVE_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -87,10 +91,10 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
-            LOGGER.info(SAVING_FROM_LIST_MESSAGE + COMPLETE_MESSAGE);
+            LOGGER.info(String.format(MESSAGE_FORMAT, SAVING_FROM_LIST_MESSAGE, COMPLETE_MESSAGE));
         } catch (SQLException e) {
-            LOGGER.error(SAVING_FROM_LIST_MESSAGE + FAILED_MESSAGE, e);
-            throw new DataBaseException(SAVING_FROM_LIST_MESSAGE + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, SAVING_FROM_LIST_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, SAVING_FROM_LIST_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -103,8 +107,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
                 return resultSet.next() ? Optional.ofNullable(mapResultSetToEntity(resultSet)) : Optional.empty();
             }
         } catch (SQLException e) {
-            LOGGER.error("Find by id" + FAILED_MESSAGE, e);
-            throw new DataBaseException("Find by id" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, FIND_BY_ID_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, FIND_BY_ID_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -120,8 +124,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
                 return entities;
             }
         } catch (SQLException e) {
-            LOGGER.error(FIND_ALL_MESSAGE + FAILED_MESSAGE, e);
-            throw new DataBaseException(FIND_ALL_MESSAGE + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -139,8 +143,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
                 return entities;
             }
         } catch (SQLException e) {
-            LOGGER.error(FIND_ALL_MESSAGE + FAILED_MESSAGE, e);
-            throw new DataBaseException(FIND_ALL_MESSAGE + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -151,8 +155,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
             INTEGER_CONSUMER.accept(preparedStatement, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Deleting by id" + FAILED_MESSAGE, e);
-            throw new DataBaseException("Deleting by id" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, DELETE_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, DELETE_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -163,8 +167,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
             updateValues(preparedStatement, entity);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error("Updating" + FAILED_MESSAGE, e);
-            throw new DataBaseException("Updating" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, UPDATE_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, UPDATE_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     
@@ -189,8 +193,8 @@ public abstract class AbstractCrudDaoImpl<E> implements CrudDao<E, Integer> {
                 return entities;
             }
         } catch (SQLException e) {
-            LOGGER.error("Find all by parameter" + FAILED_MESSAGE, e);
-            throw new DataBaseException("Find all by parameter" + FAILED_MESSAGE, e);
+            LOGGER.error(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
+            throw new DataBaseException(String.format(MESSAGE_FORMAT, FIND_ALL_MESSAGE, FAILED_MESSAGE), e);
         }
     }
     

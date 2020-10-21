@@ -27,8 +27,8 @@ public class Controller {
     private static final int REMOVE_STUDENT_FROM_COURSE_COMMAND = 6;
     private static final int EXIT_COMMAND = 0;
     
-    private static final String ENTER_STUDENT_ID = "Enter student id: ";
-    private static final String COMPLETE = "Complete";
+    private static final String ENTER_STUDENT_ID_MESSAGE = "Enter student id: ";
+    private static final String COMPLETE_MESSAGE = "Complete";
     
     private static final String NEW_LINE = "\n";
     
@@ -133,7 +133,7 @@ public class Controller {
     }
     
     private void addNewStudent() {
-        viewProvider.print(ENTER_STUDENT_ID);
+        viewProvider.print(ENTER_STUDENT_ID_MESSAGE);
         int studentId = viewProvider.readInt();
         viewProvider.print("Enter group id: ");
         int groupId = viewProvider.readInt();
@@ -148,32 +148,32 @@ public class Controller {
                 .withLastName(studentLastName)
                 .build();
         studentDao.save(student);
-        viewProvider.print(COMPLETE);
+        viewProvider.print(COMPLETE_MESSAGE);
     }
     
     private void deleteStudentById() {
-        viewProvider.print(ENTER_STUDENT_ID);
+        viewProvider.print(ENTER_STUDENT_ID_MESSAGE);
         int studentId = viewProvider.readInt();
         studentDao.deleteById(studentId);
-        viewProvider.print(COMPLETE);
+        viewProvider.print(COMPLETE_MESSAGE);
     }
     
     private void addStudentToCourse() {
-        viewProvider.print(ENTER_STUDENT_ID);
+        viewProvider.print(ENTER_STUDENT_ID_MESSAGE);
         int studentId = viewProvider.readInt();
         viewProvider.print("Enter course id: ");
         int courseId = viewProvider.readInt();
         studentDao.assignToCourse(studentId, courseId);
-        viewProvider.print(COMPLETE);
+        viewProvider.print(COMPLETE_MESSAGE);
     }
     
     private void removeStudentFromCourse() {
-        viewProvider.print(ENTER_STUDENT_ID);
+        viewProvider.print(ENTER_STUDENT_ID_MESSAGE);
         int studentId = viewProvider.readInt();
         viewProvider.print("Enter course id: ");
         int courseId = viewProvider.readInt();
         courseDao.removeStudentFromCourse(studentId, courseId);
-        viewProvider.print(COMPLETE);
+        viewProvider.print(COMPLETE_MESSAGE);
     }
     
     private void exit() {
